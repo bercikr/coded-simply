@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context 
@@ -11,17 +12,25 @@
                            http://activemq.apache.org/schema/core 
                            http://activemq.apache.org/schema/core/activemq-core.xsd">
 
-	<!-- ActiveMQ Destination -->
-	<bean id="codedSimplyQueue" class="org.apache.activemq.command.ActiveMQQueue" />
 
-	<!-- JMS Producer Configuration -->
-	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="tcp:127.0.0.1:61616" />
+
+	<bean id="codedSimplyQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<property name="physicalName" value="coded.simply.queue"/>
 	</bean>
 
+	<!-- a pooling based JMS provider -->
+	<bean id="jmsFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL">
+			<value>tcp://localhost:61616</value>
+		</property>
+	</bean>
+
+
+	<!-- Spring JMS Template -->
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="jmsConnectionFactory" />
-		<property name="defaultDestination" ref="codedSimplyQueue" />
+		<property name="connectionFactory"   ref="jmsFactory"/>
+		<property name="defaultDestination"  ref="codedSimplyQueue"/>
 	</bean>
+
 
 </beans>
