@@ -1,7 +1,8 @@
-package com.codedsimply;
+package com.codedsimply.simplejms;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.SimpleMessageListenerContainer;
 
 
 public class SimpleJmsContext 
@@ -16,6 +17,11 @@ public class SimpleJmsContext
 	
 	public static SimpleJmsContext getInstance(){
 		return instance;
+	}
+	
+	public SimpleMessageListenerContainer getListener(){
+		SimpleMessageListenerContainer smlc= context.getBean(SimpleMessageListenerContainer.class);
+		return smlc;
 	}
 	
 }

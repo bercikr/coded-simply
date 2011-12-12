@@ -1,5 +1,8 @@
 package com.codedsimply;
 
+import com.codedsimply.simplejms.GenericMessageCreator;
+
+
 public class CodedSimplyMessageCreator<T> extends GenericMessageCreator<T>
 {
 

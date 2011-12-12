@@ -18,19 +18,32 @@
 		<property name="physicalName" value="coded.simply.queue"/>
 	</bean>
 
-	<!-- a pooling based JMS provider -->
 	<bean id="jmsFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL">
 			<value>tcp://localhost:61616</value>
 		</property>
 	</bean>
 
-
-	<!-- Spring JMS Template -->
-	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+	<bean id="jmsProducerTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory"   ref="jmsFactory"/>
 		<property name="defaultDestination"  ref="codedSimplyQueue"/>
 	</bean>
 
+	<bean id="messageListener" class="com.codedsimply.CodedSimplyMessageConsumer">
+		<property name="consumerMap">
+			<map>
+				<entry key="com.codedsimply.simple_jaxb.ApplicationStartMsg">
+					<bean class="com.codedsimply.ApplicationStartMsgConsumer"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="listenerContainer" class="org.springframework.jms.listener.SimpleMessageListenerContainer">
+		<property name="connectionFactory"  ref="jmsFactory"/>
+		<property name="destination"  		ref="codedSimplyQueue"/>
+		<property name="messageListener"	ref="messageListener"/>
+		<property name="autoStartup" value="false"/>
+	</bean>
 
 </beans>

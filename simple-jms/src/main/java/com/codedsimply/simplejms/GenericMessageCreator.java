@@ -1,4 +1,4 @@
-package com.codedsimply;
+package com.codedsimply.simplejms;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -10,7 +10,9 @@ import javax.xml.bind.Marshaller;
 import org.apache.log4j.Logger;
 import org.springframework.jms.core.MessageCreator;
 
-class GenericMessageCreator<T> implements MessageCreator
+import com.codedsimply.StringResult;
+
+public class GenericMessageCreator<T> implements MessageCreator
 {
 	static Logger log = Logger.getLogger(GenericMessageCreator.class);
 	T sendMe;
@@ -25,12 +27,12 @@ class GenericMessageCreator<T> implements MessageCreator
 		StringResult sr = new StringResult();
 		try {
 			marshaller.marshal(sendMe, sr);
-			log.info(sr.toString());
+			log.debug(sr.toString());
 		} catch (JAXBException e) {
 			log.error("error marshalling message:", e);
 			throw new JMSException("problem creating message, " + e.getMessage());
 		}
-		TextMessage tm = session.createTextMessage("string");
+		TextMessage tm = session.createTextMessage(sr.toString());
 		return tm;
 	}
 	
