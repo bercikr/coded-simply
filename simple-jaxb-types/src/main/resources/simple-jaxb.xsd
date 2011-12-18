@@ -19,6 +19,14 @@
 		</xs:complexType>
 	</xs:element>
 	
+	<xs:element name="ApplicationHeartbeatMsg">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="appMsg" type="codedsimply:ApplicationMsg" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:element name="HostStartMsg">
 		<xs:complexType>
 			<xs:sequence>
